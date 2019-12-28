@@ -1,7 +1,84 @@
 ---
-title: "Chapter-3.Rmd"
+title: "Chapter-3_Network_Featurization"
 author: "Andrew Davis"
 date: "`R Sys.Date()`"
 output: html_document
 ---
 
+# Network Featurization
+
+## Basic Network Features
+
+## Neighborhood features
+
+### First order degree
+Number of connected nodes
+
+degree(g)
+
+A B C D E F G H I J 
+4 3 4 6 3 4 5 3 4 2 
+
+### Second order degree
+Number of connected nodes that are two or less edges away
+
+neighborhood.size(g, order = 2)
+
+[1]  7  7  9  9  8 10 10  7  8  5
+
+### Triangles: 
+count_triangles(g)
+
+## Centrality Features
+Betweenness - how much information tends to travel through a given node
+Closeness: 
+
+betweenness(g)
+
+A     B     C     D     E     F     G     H     I     J 
+
+1.00  0.00  3.32  8.10  0.92  5.37 11.47  2.07  5.77  0.00 
+
+closeness(g)
+
+A    B    C    D    E    F    G    H    I    J 
+
+0.06 0.05 0.07 0.08 0.06 0.07 0.08 0.06 0.06 0.04
+
+transitivity(g,type = 'local')
+
+[1] 0.67 1.00 0.67 0.47 0.67 0.50 0.40 0.67 0.50 1.00
+
+Transitivity transitivity(g,type = 'local') [1] 0.67 1.00 0.67 0.47 
+
+0.67 0.50 0.40 0.67 0.50 1.00
+
+##  Exercises:
+### Extract network degree
+```{r}
+V(g1)$degree <- degree(g1, normalized=TRUE)
+
+# Extract 2.order network degree
+degree2 <- neighborhood.size(g1, 2)
+
+# Normalize 2.order network degree
+V(g1)$degree2 <- degree2 / (length(V(g1)) - 1)
+
+# Extract number of triangles
+V(g1)$triangles <- count_triangles(g1)
+
+V(g1)$betweenness <- betweenness(g1, normalized=TRUE)
+
+# Extract the closeness
+V(g1)$closeness <- closeness(g1, normalized=TRUE)
+
+# Extract the eigenvector centrality
+V(g1)$eigenCentrality <- eigen_centrality(g1, scale = TRUE)$vector
+
+
+# Extract the local transitivity
+V(g1)$transitivity <- transitivity(g1, type='local', isolates='zero')
+
+# Compute the network's transitivity
+transitivity(g1)
+```

@@ -1,5 +1,5 @@
 ---
-title: "README.Rmd"
+title: "README"
 author: "Andrew Davis"
 date: "12/28/2019"
 output: html_document
