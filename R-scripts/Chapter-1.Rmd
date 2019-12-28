@@ -44,55 +44,52 @@ Linked nodes have a propensity to  have a similar classifier
 ```{r}
 
 # Inspect the customers dataframe
-head(customers)
+# head(customers)
 
 # Count the number of churners and non-churners
-table(customers$churn)
+# table(customers$churn)
 
 # Add a node attribute called churn
-V(network)$churn <- customers$churn
+# V(network)$churn <- customers$churn
 
 # Visualize the network
-plot(network, vertex.label = NA, edge.label = NA,
-    edge.color = 'black', vertex.size = 2)
+# plot(network, vertex.label = NA, edge.label = NA, edge.color = 'black', vertex.size = 2)
 
 ```
 
 # Add color:
 ```{r}
 # Add a node attribute called color
-V(network)$color <- V(network)$churn
+# V(network)$color <- V(network)$churn
 
 # Change the color of churners to red and non-churners to white
-V(network)$color <- gsub("1", "red", V(network)$color) 
-V(network)$color <- gsub("0", "white", V(network)$color)
+# V(network)$color <- gsub("1", "red", V(network)$color) 
+# V(network)$color <- gsub("0", "white", V(network)$color)
 
 # Plot the network
-plot(network, vertex.label = NA, edge.label = NA,
-    edge.color = "black", vertex.size = 2)
+# plot(network, vertex.label = NA, edge.label = NA, edge.color = "black", vertex.size = 2)
 ```
 
 # visualizing churners only
 ```{r}
 # Create a subgraph with only churners
-churnerNetwork <- induced_subgraph(network, 
-                    v = V(network)[which(V(network)$churn == 1)])
+# churnerNetwork <- induced_subgraph(network, v = V(network)[which(V(network)$churn == 1)])
                     
 # Plot the churner network 
-plot(churnerNetwork, vertex.label = NA, vertex.size = 2)
+# plot(churnerNetwork, vertex.label = NA, vertex.size = 2)
 
 ```
 
 # Relational Neighbor Classifier:
 ```{r}
 # Compute the churn probabilities
-churnProb <- ChurnNeighbors / (ChurnNeighbors + NonChurnNeighbors)
+# churnProb <- ChurnNeighbors / (ChurnNeighbors + NonChurnNeighbors)
 
 # Find who is most likely to churn
-mostLikelyChurners <- which(churnProb == max(churnProb))
+# mostLikelyChurners <- which(churnProb == max(churnProb))
 
 # Extract the IDs of the most likely churners
-customers$id[mostLikelyChurners]
+# customers$id[mostLikelyChurners]
 ```
 
 
