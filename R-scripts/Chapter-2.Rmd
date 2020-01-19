@@ -20,13 +20,12 @@ Homophily: people have a strong tendency to associate with people who are more s
 
 Depends on: connectedness between nodes with same label
 
-A homophilic network - when nodes with similar qualifies tend to be connected
+A homophilic network - when nodes with similar qualities tend to be connected
 
 Types of edges - denote the types of relationships between the nodes that are connected by the edge
 
 You can count the edge types
 
- 
 ![Network connectance:](../Input/network.PNG)
 
 # Extracting types of edges
@@ -94,6 +93,6 @@ D > 1 -> dyadic
 D = 1 -> random
 D < 1 -> anti-dyadic
 
-![TTypes of dyadicity:](../Input/types_dyadicity.png)
+![Types of dyadicity:](../Input/types_dyadicity.png)
 
 
