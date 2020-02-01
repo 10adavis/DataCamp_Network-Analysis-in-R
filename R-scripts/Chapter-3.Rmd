@@ -8,13 +8,11 @@ output: html_document
 # Load dependencies:
 ```{r}
 # Install cran packages
-list.of.packages <- c("igraph","reticulate")
+list.of.packages <- c("igraph")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 
-library(pROC)
-library(reticulate)
-use_condaenv(condaenv="python3.7")
+library(igraph)
 ```
 
 # Network Featurization
@@ -55,11 +53,9 @@ betweenness(network)
 ```{r}
 closeness(network)
 ```
+
 ```{r}
 transitivity(network,type = 'local')
-
-
- transitivity(network,type = 'local')
 ```
 
 ##  Exercises:
