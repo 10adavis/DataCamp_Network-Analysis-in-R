@@ -20,8 +20,11 @@ Data Camp: Network Analysis
 Predictive Analytics using Networked Data in R
 
 Customer churning – ‘defection’
+Whena customer terminates their business with a company.
+Companies try to predict who will churn
 
-# Read in data and create igraph object
+
+## Read in data and create igraph object
 ```{r}
 load("../Input/StudentCustomers.RData")
 load("../Input/StudentEdgelist.RData")
@@ -36,17 +39,28 @@ network <- graph_from_data_frame(edgeList, directed = FALSE)
 network
 ```      
 
-# Labeled networks and network learning:
+## Labeled networks and network learning:
+
+1 means the customer churned - 0 means it didn't
 
 Churn prediction in social networks:
 
 ![Churn](../Input/churn.PNG)
 
-The relational neighbor classifer:
+The relational neighbor classifier: assuming that Linked nodes have a propensity to  have a similar classifier.
 
-Linked nodes have a propensity to  have a similar classifier
 ![relational-neighbor](../Input/relational-neighbor.PNG)
 
+rNeighbors <- c(4,3,3,5,3,2,3,0,1,0)
+pNeighbors <- c(0,0,1,1,0,2,2,3,3,2)
+rRelationalNeighbor <- rNeighbors / (rNeighbors + pNeighbors)
+rRelationalNeighbor
+  1.00 1.00 0.75 0.86 1.00 0.50 0.60 0.00 0.00 0.00
+
+The Relational Neighbor Classifier rNeighbors <- c(4,3,3,5,3,2,3,0,1,0) pNeighbors <- c(0,0,1,1,0,2,2,3,3,2) rRelationalNeighbor <- rNeighbors / (rNeighbors + pNeighbors) rRe
+
+
+### Labeling nodes
 ```{r}
 # Inspect the customers dataframe
 head(customers)
@@ -62,7 +76,7 @@ plot(network, vertex.label = NA, edge.label = NA, edge.color = 'black', vertex.s
 
 ```
 
-# Add color:
+### Add color:
 ```{r}
 # Add a node attribute called color
 V(network)$color <- V(network)$churn
@@ -84,25 +98,11 @@ churnerNetwork <- induced_subgraph(network, v = V(network)[which(V(network)$chur
 plot(churnerNetwork, vertex.label = NA, vertex.size = 2)
 ```
 
-# Relational Neighbor Classifier:
+## Relational Neighbor Classifier:
 ```{r}
 # Compute the churn probabilities
 # Where is ChurnNeighbors and NonChurnNeighbors?
 
-churn <- function(N) {
-  int.max        <- 2
-  int.min        <- 0
-  return(as.integer(runif(N, int.min, int.max)))
-}
-
-NonChurn <- function(N) {
-  int.max        <- 10
-  int.min        <- 1
-  return(as.integer(runif(N, int.min, int.max)))
-}
-
-ChurnNeighbors<- churn(956)
-NonChurnNeighbors <- NonChurn(956)
 churnProb <- ChurnNeighbors / (ChurnNeighbors + NonChurnNeighbors)
 
 # Find who is most likely to churn
@@ -113,24 +113,24 @@ customers$id[mostLikelyChurners]
 ```
 
 
-# Unsupervised learning:
+## Unsupervised learning:
 
 Splitting the data into Training (60-80%) vs. test (40-20%) sets
 
-The observations in teh dataset are not independent and identically distributed (id)
-
-Probabilistic relational neighbor classifier (instead of each node being assigned to a classifier, a probability is assigned to the node)
+The observations in the dataset are not independent and identically distributed (id)
 
 Collective inferencing is a procedure to simultaneously label nodes in interconnected data to reduce classification error.
+
+Probabilistic relational neighbor classifier (instead of each node being assigned to a classifier, a probability is assigned to the node)
 
 ```{r}
 # Load the pROC package and data
 library(pROC)
 
+# Find churn probability of the 44th customer
 churnProb[44]
 
 AdjacencyMatrix <- as_adjacency_matrix(network)
-
 
 # Update the churn probabilties and the non-churn probabilities
 churnProb_updated <- as.vector((AdjacencyMatrix %*% churnProb) / neighbors)
