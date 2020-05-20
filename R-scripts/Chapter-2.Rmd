@@ -3,7 +3,7 @@ title: "Chapter-2"
 output: html_document
 ---
 
-# Load dependencies:
+## Load dependencies:
 ```{r}
 # Install cran packages
 list.of.packages <- c("pROC")
@@ -14,7 +14,7 @@ if(length(new.packages)) install.packages(new.packages)
 
 Data Camp: Network Analysis
 
-# Homophily:
+## Homophily:
 
 Homophily: people have a strong tendency to associate with people who are more similar to themselves
 
@@ -28,7 +28,13 @@ You can count the edge types
 
 ![Network connectance:](../Input/network.PNG)
 
-# Extracting types of edges
+Network Connectance:
+p=2*edges/nodes(nodes-1)
+
+Number of edges in a fully connected network:
+nodes(nodes-1)/2
+
+### Extracting types of edges
 ```{r}
 # Add the column edgeList$FromLabel
 edgeList$FromLabel <- customers[match(edgeList$from, customers$id), 2]
@@ -41,9 +47,14 @@ edgeList$edgeType <- edgeList$FromLabel + edgeList$ToLabel
  
 # Count the number of each type of edge
 table(edgeList$edgeType)
-
 ```
+In the edgeList$edgeType column, there are three different values:
 
+0 for edges that connect two non-churn nodes.
+1 for edges that connect a non-churn and a churn node. These are called mixed or cross-label edges.
+2 for edges that connect two churn nodes.
+
+### Counting types of edges
 ```{r}
 # Count churn edges
 ChurnEdges <- sum(edgeList$edgeType == 2)
@@ -60,9 +71,7 @@ edges <- ChurnEdges + NonChurnEdges + MixedEdges
 #Print the number of edges
 edges
 ```
-
-
-# Counting nodes and computing connectance:
+### Counting nodes and computing connectance:
 ```{r}
 # Count the number of churn nodes
 ChurnNodes <- sum(customers$churn == 1)
@@ -80,8 +89,10 @@ connectance <- 2 * edges / (nodes * (nodes - 1))
 connectance
 ```
 
+A connectance of 0.001 is quite low (i.e. sparse)
 
-# Measuring Relational Dependency: Dyadicity:
+
+## Measuring Relational Dependency: Dyadicity:
 
 Dyadicity measures the connectedness between nodes with the same labels compared to what is expected in a random configuration of the network.
 
