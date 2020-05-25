@@ -45,11 +45,11 @@ network
 
 Churn prediction in social networks:
 
-![Churn](../Input/churn.PNG)
+![Churn](../Input/churn.png)
 
 The relational neighbor classifier: assuming that Linked nodes have a propensity to  have a similar classifier.
 
-![relational-neighbor](../Input/relational-neighbor.PNG)
+![relational-neighbor](../Input/relational-neighbor.png)
 
 rNeighbors <- c(4,3,3,5,3,2,3,0,1,0)
 pNeighbors <- c(0,0,1,1,0,2,2,3,3,2)
@@ -57,7 +57,7 @@ rRelationalNeighbor <- rNeighbors / (rNeighbors + pNeighbors)
 rRelationalNeighbor
   1.00 1.00 0.75 0.86 1.00 0.50 0.60 0.00 0.00 0.00
 
-The Relational Neighbor Classifier rNeighbors <- c(4,3,3,5,3,2,3,0,1,0) pNeighbors <- c(0,0,1,1,0,2,2,3,3,2) rRelationalNeighbor <- rNeighbors / (rNeighbors + pNeighbors) rRe
+The Relational Neighbor Classifier rNeighbors <- c(4,3,3,5,3,2,3,0,1,0) pNeighbors <- c(0,0,1,1,0,2,2,3,3,2) rRelationalNeighbor <- rNeighbors / (rNeighbors + pNeighbors) 
 
 
 ### Labeling nodes
@@ -127,26 +127,21 @@ Probabilistic relational neighbor classifier (instead of each node being assigne
 # Load the pROC package and data
 library(pROC)
 
+
 # Find churn probability of the 44th customer
 churnProb[44]
 
 AdjacencyMatrix <- as_adjacency_matrix(network)
-
 # Update the churn probabilties and the non-churn probabilities
 churnProb_updated <- as.vector((AdjacencyMatrix %*% churnProb) / neighbors)
-
 # Find updated churn probability of the 44th customer
 churnProb_updated[44]
-
-
 # Compute the AUC
 auc(customers$churn, as.vector(churnProb))
-
 # Write a for loop to update the probabilities
 for(i in 1:10){
  churnProb <- as.vector((AdjacencyMatrix %*% churnProb) / neighbors)
 }
-
 # Compute the AUC again
 auc(customers$churn, as.vector(churnProb))
 ```

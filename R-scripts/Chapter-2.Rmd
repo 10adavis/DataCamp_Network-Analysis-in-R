@@ -26,7 +26,7 @@ Types of edges - denote the types of relationships between the nodes that are co
 
 You can count the edge types
 
-![Network connectance:](../Input/network.PNG)
+![Network connectance:](../Input/network.png)
 
 Network Connectance:
 p=2*edges/nodes(nodes-1)
@@ -96,14 +96,78 @@ A connectance of 0.001 is quite low (i.e. sparse)
 
 Dyadicity measures the connectedness between nodes with the same labels compared to what is expected in a random configuration of the network.
 
-![dyadicity:](../Input/dyadicity.PNG)
+![dyadicity:](../Input/dyadicity.png)
 
 D = number of same label edges/ expected number of same label edges
 
 D > 1 -> dyadic
 D = 1 -> random
 D < 1 -> anti-dyadic
-
 ![Types of dyadicity:](../Input/types_dyadicity.png)
 
+![Dyadicity in Network:](../Input/dyadicity-data.png)
 
+## Dyadicity of  and nonchurners
+In this exercise, you will compute the dyadicity amongst the churners in the network to see if they share more or fewer edges than expected in a random configuration of the network.
+
+The variables ChurnNodes, ChurnEdges, and connectance are available for you to use.
+
+For expected dyadicity, use the formula nC⋅(nC−1)2⋅p, where nC is the number of churners, N is the number of nodes, and p is the connectance. Dyadicity of the churners is the ratio between the actual churners and the expected churn dyadicity.
+```{r}
+# Compute the expected dyadicity of churners and assign it to the variable ExpectedDyadChurn.
+ExpectedDyadChurn<-(ChurnNodes*ChurnNodes-1)/2 * connectance
+
+# Compute the dyadicity of the churners by dividing ChurnEdges with ExpectedDyadChurn. Call this value DyadChurn.
+DyadChurn<-ChurnEdges/ExpectedDyadChurn
+
+DyadChurn
+```
+A dyadicity of 2.14 indicates there is dyadicity among churners
+
+#### Same for non churners:
+```{r}
+# Compute the expected dyadicity of churners and assign it to the variable ExpectedDyadChurn.
+ExpectedDyadNonChurn<-(NonChurnNodes*NonChurnNodes-1)/2 * connectance
+
+# Compute the dyadicity of the churners by dividing ChurnEdges with ExpectedDyadChurn. Call this value DyadChurn.
+DyadNonChurn<-NonChurnEdges/ExpectedDyadNonChurn
+
+DyadNonChurn
+```
+A dyadicity of 0.99 indicates there is not dyadicity among Non churners
+
+
+
+## Heterophilicity:
+Measures the connectedness of nodes with opposite labels (i.e. 'cross-label edges') compared to what is expected for a random configuration of the network
+
+Expected number of cross label edges = nw*ng*p
+
+H = # of cross label edges/ expected # of cross label edges
+
+
+H > 1 -> heterophilic
+H = 1 -> random
+H < 1 -> heterophobic
+![Types of heterophilicity:](../Input/types_hetero.PNG)
+
+### Compute heterophilicity:
+Similar to dyadicity, heterophilicity is the ratio between the actual number of mixed label edges and the expected number of mixed label edges. In this exercise, you will compute the network's heterophilicity.
+
+For the expected number of mixed edges, use the formula nNC⋅nC⋅p where nNC is the number of non-churners, nC is the number of churners and p is the connectance.
+
+You can use the variables NonChurnNodes, ChurnNodes, connectance, and MixedEdges.
+
+```{r}
+# Compute the expected number of mixed edges and assign it to the variable ExpectedHet.
+ExpectedHet <- NonChurnNodes * ChurnNodes * connectance
+
+# Compute the heterophilicity by dividing the actual number of mixed edges with the expected number of mixed edges. Call this variable Het.
+Het <- MixedEdges/ExpectedHet
+
+# Is the network heterophilic? Inspect Het to find out.
+Het
+```
+
+
+## Summary of Homophily:
